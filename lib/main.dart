@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_shop_sphere/app/res/app_text_styles.dart';
 import 'package:shop_shop_sphere/app/res/app_theme.dart';
+import 'package:shop_shop_sphere/app/routes/app_pages.dart';
 import 'package:shop_shop_sphere/firebase_options.dart';
 
 void main() async {
@@ -20,15 +21,11 @@ class ShopSphereApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: AppPages.appRoutes,
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       title: 'ShopSphere My  First Ecommerse App',
-      home: Scaffold(
-        body: Center(
-          child: Text("Hello from shopspheres", style: AppTextStyles.heading),
-        ),
-      ),
     );
   }
 }
