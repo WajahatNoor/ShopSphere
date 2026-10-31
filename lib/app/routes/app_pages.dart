@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:shop_shop_sphere/app/modules/Login/views/login_screen.dart';
+import 'package:shop_shop_sphere/app/modules/onbording/views/onbording_screen.dart';
 import 'package:shop_shop_sphere/app/modules/splash/views/splash_screen.dart';
 import 'package:shop_shop_sphere/app/routes/app_routes.dart';
 
@@ -10,6 +12,16 @@ class AppPages {
         path: '/',
         name: AppRoutes.splash,
         builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: '/onbording',
+        name: AppRoutes.onbording,
+        builder: (context, state) => const OnbordingScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: AppRoutes.login,
+        builder: (context, state) => const LoginScreen(),
       ),
     ],
   );

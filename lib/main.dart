@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_shop_sphere/app/res/app_text_styles.dart';
 import 'package:shop_shop_sphere/app/res/app_theme.dart';
 import 'package:shop_shop_sphere/app/routes/app_pages.dart';
 import 'package:shop_shop_sphere/firebase_options.dart';

@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_shop_sphere/app/modules/splash/widgets/loading_dots.dart';
 import 'package:shop_shop_sphere/app/res/app_colors.dart';
 import 'package:shop_shop_sphere/app/res/app_images.dart';
 import 'package:shop_shop_sphere/app/res/app_spacings.dart';
 import 'package:shop_shop_sphere/app/res/app_text_styles.dart';
+import 'package:shop_shop_sphere/app/routes/app_routes.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    navigateToOnbording();
+  }
+
+  void navigateToOnbording() async {
+    await Future.delayed(Duration(seconds: 3));
+    if (!mounted) return;
+    context.go(AppRoutes.onbording);
+  }
 
   @override
   Widget build(BuildContext context) {
