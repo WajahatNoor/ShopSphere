@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:shop_shop_sphere/app/modules/onbording/widgets/onbording_widget.dart';
+import 'package:shop_shop_sphere/app/modules/Onbording/widgets/onbording_widget.dart';
 import 'package:shop_shop_sphere/app/res/app_colors.dart';
 import 'package:shop_shop_sphere/app/res/app_images.dart';
 import 'package:shop_shop_sphere/app/res/app_text_styles.dart';

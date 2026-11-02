@@ -36,7 +36,7 @@ class OnboardingWidget extends StatelessWidget {
         Text(
           description,
           textAlign: TextAlign.center,
-          style: AppTextStyles.bodySmall,
+          style: AppTextStyles.body,
         ),
       ],
     );

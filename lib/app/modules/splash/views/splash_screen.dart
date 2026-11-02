@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_shop_sphere/app/modules/splash/widgets/loading_dots.dart';
+import 'package:shop_shop_sphere/app/modules/Splash/widgets/loading_dots.dart';
 import 'package:shop_shop_sphere/app/res/app_colors.dart';
 import 'package:shop_shop_sphere/app/res/app_images.dart';
 import 'package:shop_shop_sphere/app/res/app_spacings.dart';
