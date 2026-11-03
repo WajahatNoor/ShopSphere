@@ -35,12 +35,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
         fullName: event.fullname,
       );
-
-      emit(
-        AuthRegistoredUserSuccessState(
-          successState: "Account Created Successfully",
-        ),
-      );
     } catch (e) {
       emit(AuthErrorState(errorMessage: e.toString()));
     }
@@ -85,7 +79,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
     try {
       await authRepo.logout();
-      emit(AuthLogoutSuccess(successState: "Logged Out Successfully"));
     } catch (e) {
       emit(AuthErrorState(errorMessage: e.toString()));
     }

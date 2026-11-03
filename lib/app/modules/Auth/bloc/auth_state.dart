@@ -17,18 +17,6 @@ final class AuthenticatedState extends AuthState {}
 
 final class UnAuthenticatedState extends AuthState {}
 
-final class AuthRegistoredUserSuccessState extends AuthActionState {
-  final String successState;
-
-  AuthRegistoredUserSuccessState({required this.successState});
-}
-
-final class AuthLogoutSuccess extends AuthActionState {
-  final String successState;
-
-  AuthLogoutSuccess({required this.successState});
-}
-
 final class AuthErrorState extends AuthActionState {
   final String errorMessage;
 

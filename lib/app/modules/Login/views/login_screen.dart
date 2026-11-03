@@ -37,67 +37,106 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.xl,
-          ),
-          child: Form(
-            key: formkey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const AuthHeader(
-                  title: 'Welcome Back',
-                  subtitle: 'Sign in to your ShopSphere account',
-                ),
-                const SizedBox(height: AppSpacing.xxl),
-                AuthTextField(
-                  hint: 'Email',
-                  validator: Validators.emailLoginValidator,
-                  icon: Icons.email_outlined,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                ),
-                const SizedBox(height: AppSpacing.md),
-                AuthTextField(
-                  hint: 'Password',
-                  icon: Icons.lock_outline,
-                  validator: Validators.passwordLoginValidator,
-                  obscureText: true,
-                  textInputAction: TextInputAction.done,
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () =>
-                        context.pushNamed(AppRoutes.forgotPassword),
-                    child: Text(
-                      'Forgot Password?',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.secondary,
-                        fontWeight: FontWeight.w600,
-                      ),
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthErrorState) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state is AuthLoadingState;
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              SafeArea(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.xl,
+                  ),
+                  child: Form(
+                    key: formkey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const AuthHeader(
+                          title: 'Welcome Back',
+                          subtitle: 'Sign in to your ShopSphere account',
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+                        AuthTextField(
+                          hint: 'Email',
+                          controller: emailController,
+                          validator: Validators.emailLoginValidator,
+                          icon: Icons.email_outlined,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        AuthTextField(
+                          hint: 'Password',
+                          controller: passwordController,
+                          icon: Icons.lock_outline,
+                          validator: Validators.passwordLoginValidator,
+                          obscureText: true,
+                          textInputAction: TextInputAction.done,
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () =>
+                                context.pushNamed(AppRoutes.forgotPassword),
+                            child: Text(
+                              'Forgot Password?',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.secondary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        AuthButton(
+                          title: 'Login',
+                          onPressed: isLoading
+                              ? () {}
+                              : () {
+                                  doLogin();
+                                },
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+                        const AuthDivider(),
+                        const SizedBox(height: AppSpacing.lg),
+                        GoogleSignInButton(onPressed: () {}),
+                        const SizedBox(height: AppSpacing.xl),
+                        AuthPrompt(
+                          question: "Don't have an account?",
+                          actionText: 'Sign Up',
+                          onTap: () => context.pushNamed(AppRoutes.register),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.sm),
-                AuthButton(title: 'Sign In', onPressed: doLogin),
-                const SizedBox(height: AppSpacing.lg),
-                const AuthDivider(),
-                const SizedBox(height: AppSpacing.lg),
-                GoogleSignInButton(onPressed: () {}),
-                const SizedBox(height: AppSpacing.xl),
-                AuthPrompt(
-                  question: "Don't have an account?",
-                  actionText: 'Sign Up',
-                  onTap: () => context.pushNamed(AppRoutes.register),
-                ),
-              ],
-            ),
-          ),
-        ),
+              ),
+              isLoading
+                  ? Positioned.fill(
+                      child: Container(
+                        color: Colors.black.withValues(alpha: 0.35),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primary,
+                            strokeWidth: 3,
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
+            ],
+          );
+        },
       ),
     );
   }

@@ -30,6 +30,7 @@ class AppTheme {
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.background,
         foregroundColor: AppColors.primary,
+
         elevation: 0,
         centerTitle: false,
       ),
