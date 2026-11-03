@@ -7,13 +7,16 @@ class FirebaseAuthServices {
 
   // Register
   Future<UserCredential> register({
+    required String fullName,
     required String email,
     required String password,
   }) async {
-    return await firebaseAuth.createUserWithEmailAndPassword(
+    final credentials = await firebaseAuth.createUserWithEmailAndPassword(
       email: email.trim(),
       password: password,
     );
+    await credentials.user?.updateDisplayName(fullName);
+    return credentials;
   }
 
   // Login
@@ -36,10 +39,4 @@ class FirebaseAuthServices {
   Future<void> sendPasswordResetEmail({required String email}) async {
     await firebaseAuth.sendPasswordResetEmail(email: email.trim());
   }
-
-  //current user
-  User? get currentUser => firebaseAuth.currentUser;
-
-  // Authentication Session
-  Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
 }

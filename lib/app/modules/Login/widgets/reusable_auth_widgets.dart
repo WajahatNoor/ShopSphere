@@ -23,11 +23,7 @@ class AuthLogo extends StatelessWidget {
 }
 
 class AuthHeader extends StatelessWidget {
-  const AuthHeader({
-    super.key,
-    required this.title,
-    required this.subtitle,
-  });
+  const AuthHeader({super.key, required this.title, required this.subtitle});
 
   final String title;
   final String subtitle;
@@ -59,6 +55,8 @@ class AuthTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.controller,
     this.textInputAction,
+    this.validator,
+    this.onChanged,
   });
 
   final String hint;
@@ -67,14 +65,18 @@ class AuthTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final TextEditingController? controller;
   final TextInputAction? textInputAction;
+  final String? Function(String?)? validator;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
+      validator: validator,
+      onChanged: onChanged,
       style: AppTextStyles.body,
       cursorColor: AppColors.primary,
       decoration: InputDecoration(

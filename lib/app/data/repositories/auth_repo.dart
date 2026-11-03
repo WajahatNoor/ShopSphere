@@ -3,11 +3,14 @@ import 'package:shop_shop_sphere/app/services/firebase_auth_services.dart';
 
 class AuthRepo {
   final FirebaseAuthServices authServices;
-  AuthRepo({required this.authServices});
+  final FirebaseAuth firebaseAuth;
+  AuthRepo({required this.authServices, required this.firebaseAuth});
 
-  User? get currentUser => authServices.currentUser;
+  //current user
+  User? get currentUser => firebaseAuth.currentUser;
 
-  Stream<User?> get authStateChanges => authServices.authStateChanges;
+  // Authentication Session
+  Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
 
   Future<User> login({required String email, required String password}) async {
     try {
@@ -19,11 +22,13 @@ class AuthRepo {
   }
 
   Future<User> register({
+    required String fullName,
     required String email,
     required String password,
   }) async {
     try {
       final result = await authServices.register(
+        fullName: fullName,
         email: email,
         password: password,
       );

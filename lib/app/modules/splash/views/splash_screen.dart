@@ -18,13 +18,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    navigateToOnbording();
+    startSplash();
   }
 
-  void navigateToOnbording() async {
-    await Future.delayed(Duration(seconds: 3));
-    if (!mounted) return;
-    context.go(AppRoutes.onbording);
+  void startSplash() async {
+    await Future.delayed(Duration(seconds: 4));
   }
 
   @override
