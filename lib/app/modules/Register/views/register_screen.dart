@@ -54,6 +54,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: AppColors.background,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
+          if (state is GoogleSignInLoadingState) {
+            AppLoader.showLoaderWithDialog();
+          }
           if (state is AuthLoadingState) {
             AppLoader.showLoaderWithDialog();
           }
@@ -64,6 +67,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
           }
           if (state is AuthErrorState) {
+            AppLoader.hideLoader();
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+          }
+          if (state is GoogleSignInErrorState) {
             AppLoader.hideLoader();
             ScaffoldMessenger.of(
               context,
@@ -144,7 +153,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               const SizedBox(height: AppSpacing.lg),
                               const AuthDivider(),
                               const SizedBox(height: AppSpacing.lg),
-                              GoogleSignInButton(onPressed: () {}),
+                              GoogleSignInButton(
+                                onPressed: state is GoogleSignInLoadingState
+                                    ? () {}
+                                    : () {
+                                        context.read<AuthBloc>().add(
+                                          GoogleSignInRequested(),
+                                        );
+                                      },
+                              ),
                               const SizedBox(height: AppSpacing.xl),
                               AuthPrompt(
                                 question: 'Already have an account?',

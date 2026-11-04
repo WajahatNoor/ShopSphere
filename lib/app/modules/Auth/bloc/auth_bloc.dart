@@ -22,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginRequested>(loginRequested);
     on<AuthLogoutRequested>(authLogoutRequested);
     on<ForgotPasswordRequested>(forgotPasswordRequested);
+    on<GoogleSignInRequested>(googleSignInRequested);
   }
 
   FutureOr<void> registoredRquested(
@@ -95,6 +96,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(ForgotPasswordSuccessState());
     } catch (e) {
       emit(ForgotPasswordErrorState(errorMessage: e.toString()));
+    }
+  }
+
+  FutureOr<void> googleSignInRequested(
+    GoogleSignInRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(GoogleSignInLoadingState());
+    try {
+      await authRepo.signInWithGoogle();
+    } catch (e) {
+      emit(GoogleSignInErrorState(errorMessage: e.toString()));
     }
   }
 }

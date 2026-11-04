@@ -1,9 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shop_shop_sphere/app/res/app_contants.dart';
 
 class FirebaseAuthServices {
   final FirebaseAuth firebaseAuth;
-  FirebaseAuthServices({required this.firebaseAuth});
+  final GoogleSignIn googleSignIn;
+  FirebaseAuthServices({
+    required this.firebaseAuth,
+    required this.googleSignIn,
+  });
 
   // Register
   Future<UserCredential> register({
@@ -28,6 +34,21 @@ class FirebaseAuthServices {
       email: email,
       password: password,
     );
+  }
+
+  //sign in with google
+
+  // Login
+  Future<UserCredential> signinWithGoogle() async {
+    await googleSignIn.initialize(serverClientId: AppConstants.webClientId);
+    final googleUser = await googleSignIn.authenticate();
+    final googleAuth = googleUser.authentication;
+
+    final credentials = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+    );
+
+    return firebaseAuth.signInWithCredential(credentials);
   }
 
   //logout user

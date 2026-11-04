@@ -40,14 +40,25 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: AppColors.background,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
+          if (state is GoogleSignInLoadingState) {
+            AppLoader.showLoaderWithDialog();
+          }
+
           if (state is AuthLoadingState) {
             AppLoader.showLoaderWithDialog();
           }
 
-          if (state is AuthenticatedState || state is AuthErrorState) {
+          if (state is AuthenticatedState ||
+              state is AuthErrorState ||
+              state is GoogleSignInErrorState) {
             AppLoader.hideLoader();
           }
           if (state is AuthErrorState) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+          }
+          if (state is GoogleSignInErrorState) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
@@ -115,7 +126,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: AppSpacing.lg),
                     const AuthDivider(),
                     const SizedBox(height: AppSpacing.lg),
-                    GoogleSignInButton(onPressed: () {}),
+                    GoogleSignInButton(
+                      onPressed: state is GoogleSignInLoadingState
+                          ? () {}
+                          : () {
+                              context.read<AuthBloc>().add(
+                                GoogleSignInRequested(),
+                              );
+                            },
+                    ),
                     const SizedBox(height: AppSpacing.xl),
                     AuthPrompt(
                       question: "Don't have an account?",

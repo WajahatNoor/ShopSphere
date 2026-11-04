@@ -34,6 +34,8 @@ class ForgotPasswordRequested extends AuthEvent {
   const ForgotPasswordRequested({required this.email});
 }
 
+class GoogleSignInRequested extends AuthEvent {}
+
 class AuthStateChanged extends AuthEvent {
   final User? user;
 

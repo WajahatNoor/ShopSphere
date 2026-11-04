@@ -34,3 +34,11 @@ final class ForgotPasswordErrorState extends AuthActionState {
 
   ForgotPasswordErrorState({required this.errorMessage});
 }
+
+final class GoogleSignInLoadingState extends AuthState {}
+
+final class GoogleSignInErrorState extends AuthActionState {
+  final String errorMessage;
+
+  GoogleSignInErrorState({required this.errorMessage});
+}

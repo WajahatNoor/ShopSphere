@@ -40,6 +40,10 @@ class AuthRepo {
 
   Future<void> logout() => authServices.logout();
 
+  Future<UserCredential> signInWithGoogle() async {
+    return await authServices.signinWithGoogle();
+  }
+
   Future<void> sendPasswordResetEmail({required String email}) async {
     try {
       await authServices.sendPasswordResetEmail(email: email);
