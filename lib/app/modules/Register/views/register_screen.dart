@@ -6,6 +6,7 @@ import 'package:shop_shop_sphere/app/modules/Login/widgets/reusable_auth_widgets
 import 'package:shop_shop_sphere/app/res/app_colors.dart';
 import 'package:shop_shop_sphere/app/res/app_spacings.dart';
 import 'package:shop_shop_sphere/app/routes/app_routes.dart';
+import 'package:shop_shop_sphere/app/utils/app_loader.dart';
 import 'package:shop_shop_sphere/app/utils/form_validations.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -53,12 +54,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: AppColors.background,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
+          if (state is AuthLoadingState) {
+            AppLoader.showLoaderWithDialog();
+          }
           if (state is AuthenticatedState) {
+            AppLoader.hideLoader();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("Account Created Successfully")),
             );
           }
           if (state is AuthErrorState) {
+            AppLoader.hideLoader();
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
@@ -66,112 +72,94 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         builder: (context, state) {
           final isLoading = state is AuthLoadingState;
-          return Stack(
-            children: [
-              SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Form(
-                              key: formKey,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  const AuthHeader(
-                                    title: 'Create Account',
-                                    subtitle:
-                                        'Sign up to start shopping on ShopSphere',
-                                  ),
-                                  const SizedBox(height: AppSpacing.xxl),
-                                  const AuthTextField(
-                                    hint: 'Full Name',
-                                    icon: Icons.person_outline,
-                                    keyboardType: TextInputType.name,
-                                    validator: Validators.validateName,
-                                    textInputAction: TextInputAction.next,
-                                  ),
-                                  const SizedBox(height: AppSpacing.md),
-                                  AuthTextField(
-                                    hint: 'Email',
-                                    icon: Icons.email_outlined,
-                                    controller: emailController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    textInputAction: TextInputAction.next,
-                                    validator: Validators.validateEmail,
-                                  ),
-                                  const SizedBox(height: AppSpacing.md),
-                                  AuthTextField(
-                                    hint: 'Password',
-                                    icon: Icons.lock_outline,
-                                    controller: passwordController,
-                                    obscureText: true,
-                                    textInputAction: TextInputAction.next,
-                                    validator: Validators.validatePassword,
-                                  ),
-                                  const SizedBox(height: AppSpacing.md),
-                                  AuthTextField(
-                                    hint: 'Confirm Password',
-                                    icon: Icons.lock_outline,
-                                    controller: confirmPasswordController,
-                                    obscureText: true,
-                                    textInputAction: TextInputAction.done,
-                                    validator: (value) =>
-                                        Validators.validateConfirmPassword(
-                                          value: value,
-                                          password:
-                                              confirmPasswordController.text,
-                                        ),
-                                  ),
-
-                                  const SizedBox(height: AppSpacing.lg),
-                                  AuthButton(
-                                    title: 'Sign Up',
-
-                                    onPressed: isLoading
-                                        ? () {}
-                                        : () {
-                                            doSignup();
-                                          },
-                                  ),
-                                  const SizedBox(height: AppSpacing.lg),
-                                  const AuthDivider(),
-                                  const SizedBox(height: AppSpacing.lg),
-                                  GoogleSignInButton(onPressed: () {}),
-                                  const SizedBox(height: AppSpacing.xl),
-                                  AuthPrompt(
-                                    question: 'Already have an account?',
-                                    actionText: 'Sign In',
-                                    onTap: () =>
-                                        context.goNamed(AppRoutes.login),
-                                  ),
-                                ],
+          return SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const AuthHeader(
+                                title: 'Create Account',
+                                subtitle:
+                                    'Sign up to start shopping on ShopSphere',
                               ),
-                            ),
+                              const SizedBox(height: AppSpacing.xxl),
+                              const AuthTextField(
+                                hint: 'Full Name',
+                                icon: Icons.person_outline,
+                                keyboardType: TextInputType.name,
+                                validator: Validators.validateName,
+                                textInputAction: TextInputAction.next,
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              AuthTextField(
+                                hint: 'Email',
+                                icon: Icons.email_outlined,
+                                controller: emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.next,
+                                validator: Validators.validateEmail,
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              AuthTextField(
+                                hint: 'Password',
+                                icon: Icons.lock_outline,
+                                controller: passwordController,
+                                obscureText: true,
+                                textInputAction: TextInputAction.next,
+                                validator: Validators.validatePassword,
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              AuthTextField(
+                                hint: 'Confirm Password',
+                                icon: Icons.lock_outline,
+                                controller: confirmPasswordController,
+                                obscureText: true,
+                                textInputAction: TextInputAction.done,
+                                validator: (value) =>
+                                    Validators.validateConfirmPassword(
+                                      value: value,
+                                      password: passwordController.text.trim(),
+                                    ),
+                              ),
+
+                              const SizedBox(height: AppSpacing.lg),
+                              AuthButton(
+                                title: 'Sign Up',
+
+                                onPressed: isLoading
+                                    ? () {}
+                                    : () {
+                                        doSignup();
+                                      },
+                              ),
+                              const SizedBox(height: AppSpacing.lg),
+                              const AuthDivider(),
+                              const SizedBox(height: AppSpacing.lg),
+                              GoogleSignInButton(onPressed: () {}),
+                              const SizedBox(height: AppSpacing.xl),
+                              AuthPrompt(
+                                question: 'Already have an account?',
+                                actionText: 'Sign In',
+                                onTap: () => context.goNamed(AppRoutes.login),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              if (isLoading)
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.black.withValues(alpha: 0.35),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primary,
-                        strokeWidth: 3,
                       ),
                     ),
-                  ),
+                  ],
                 ),
-            ],
+              ),
+            ),
           );
         },
       ),

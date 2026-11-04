@@ -22,3 +22,15 @@ final class AuthErrorState extends AuthActionState {
 
   AuthErrorState({required this.errorMessage});
 }
+
+final class ForgotPasswordLoadingState extends AuthState {}
+
+final class ForgotPasswordSuccessState extends AuthActionState {
+  ForgotPasswordSuccessState();
+}
+
+final class ForgotPasswordErrorState extends AuthActionState {
+  final String errorMessage;
+
+  ForgotPasswordErrorState({required this.errorMessage});
+}

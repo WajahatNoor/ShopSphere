@@ -28,6 +28,12 @@ class LoginRequested extends AuthEvent {
 
 class AuthLogoutRequested extends AuthEvent {}
 
+class ForgotPasswordRequested extends AuthEvent {
+  final String email;
+
+  const ForgotPasswordRequested({required this.email});
+}
+
 class AuthStateChanged extends AuthEvent {
   final User? user;
 

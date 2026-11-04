@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegistoredRquested>(registoredRquested);
     on<LoginRequested>(loginRequested);
     on<AuthLogoutRequested>(authLogoutRequested);
+    on<ForgotPasswordRequested>(forgotPasswordRequested);
   }
 
   FutureOr<void> registoredRquested(
@@ -81,6 +82,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authRepo.logout();
     } catch (e) {
       emit(AuthErrorState(errorMessage: e.toString()));
+    }
+  }
+
+  FutureOr<void> forgotPasswordRequested(
+    ForgotPasswordRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(ForgotPasswordLoadingState());
+    try {
+      await authRepo.sendPasswordResetEmail(email: event.email);
+      emit(ForgotPasswordSuccessState());
+    } catch (e) {
+      emit(ForgotPasswordErrorState(errorMessage: e.toString()));
     }
   }
 }

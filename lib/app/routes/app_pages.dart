@@ -8,10 +8,12 @@ import 'package:shop_shop_sphere/app/modules/Onbording/views/onbording_screen.da
 import 'package:shop_shop_sphere/app/modules/Splash/views/splash_screen.dart';
 import 'package:shop_shop_sphere/app/routes/app_routes.dart';
 import 'package:shop_shop_sphere/app/routes/auth_router_refresh_notifier.dart';
+import 'package:shop_shop_sphere/app/utils/app_loader.dart';
 
 class AppPages {
   static GoRouter createRouter(AuthBloc authBloc) {
     return GoRouter(
+      navigatorKey: AppLoader.navigatorKey,
       refreshListenable: AuthRouterRefreshNotifier(authBloc.stream),
       redirect: (context, state) {
         final authState = authBloc.state;
