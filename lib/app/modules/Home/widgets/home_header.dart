@@ -4,7 +4,8 @@ import 'package:shop_shop_sphere/app/res/app_spacings.dart';
 import 'package:shop_shop_sphere/app/res/app_text_styles.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({super.key});
+  final String userName;
+  const HomeHeader({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {

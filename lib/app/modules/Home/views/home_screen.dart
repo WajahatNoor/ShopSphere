@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_shop_sphere/app/modules/Home/widgets/categories_section.dart';
 import 'package:shop_shop_sphere/app/res/app_colors.dart';
 import 'package:shop_shop_sphere/app/res/app_spacings.dart';
+import 'package:shop_shop_sphere/app/utils/all_bloc_providers.dart';
 
 import '../widgets/home_header.dart';
 import '../widgets/home_search_bar.dart';
@@ -15,6 +17,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userName = FirebaseAuth.instance.currentUser?.displayName ?? 'User';
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -25,8 +28,8 @@ class HomeScreen extends StatelessWidget {
               sliver: SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    HomeHeader(),
+                  children: [
+                    HomeHeader(userName: userName),
 
                     SizedBox(height: AppSpacing.lg),
 
