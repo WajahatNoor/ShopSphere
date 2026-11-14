@@ -4,10 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shop_shop_sphere/app/data/repositories/auth_repo.dart';
 import 'package:shop_shop_sphere/app/data/repositories/categories_repo.dart';
+import 'package:shop_shop_sphere/app/data/repositories/products_repo.dart';
 import 'package:shop_shop_sphere/app/modules/Auth/bloc/auth_bloc.dart';
 import 'package:shop_shop_sphere/app/modules/Categories/bloc/categories_bloc.dart';
+import 'package:shop_shop_sphere/app/modules/Products/bloc/products_bloc.dart';
+
 import 'package:shop_shop_sphere/app/services/firebase_auth_services.dart';
 import 'package:shop_shop_sphere/app/services/firebase_categories_service.dart';
+import 'package:shop_shop_sphere/app/services/firebase_products_services.dart';
 
 class AllBlocProviders {
   //DEPENDENCY INJECTION REQUIRED
@@ -15,6 +19,9 @@ class AllBlocProviders {
   static final googleSigninAuth = GoogleSignIn.instance;
   static final firebaseFirestore = FirebaseFirestore.instance;
   static final firebaseCategoriesService = FirebaseCategoriesService(
+    firestore: firebaseFirestore,
+  );
+  static final firebaseProductsService = FirebaseProductsServices(
     firestore: firebaseFirestore,
   );
   static final authServices = FirebaseAuthServices(
@@ -25,6 +32,9 @@ class AllBlocProviders {
   static final authRepo = AuthRepo(
     authServices: authServices,
     firebaseAuth: firebaseAuth,
+  );
+  static final productsRepo = ProductsRepo(
+    firebaseProductsServices: firebaseProductsService,
   );
   static final categoriesRepo = CategoriesRepo(
     firebaseCategoriesService: firebaseCategoriesService,
@@ -37,6 +47,11 @@ class AllBlocProviders {
       create: (context) =>
           CategoriesBloc(categoriesRepo: categoriesRepo)
             ..add(FetchCategoriesRequested()),
+    ),
+    BlocProvider<ProductsBloc>(
+      create: (context) =>
+          ProductsBloc(productsRepo: productsRepo)
+            ..add(FetchFeatureProductsRequested()),
     ),
   ];
 }

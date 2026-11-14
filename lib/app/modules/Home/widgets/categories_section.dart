@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:shop_shop_sphere/app/modules/Categories/bloc/categories_bloc.dart';
+import 'package:shop_shop_sphere/app/modules/Home/bloc/home_bloc.dart';
+
 import 'package:shop_shop_sphere/app/res/app_colors.dart';
 import 'package:shop_shop_sphere/app/res/app_spacings.dart';
 import 'package:shop_shop_sphere/app/res/app_text_styles.dart';
@@ -41,7 +42,7 @@ class CategorySection extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Shop by Category', style: AppTextStyles.subheading),
+                  Text('Shop by Categories', style: AppTextStyles.subheading),
                   TextButton(
                     onPressed: () {
                       // TODO: Navigate to categories screen
@@ -62,7 +63,7 @@ class CategorySection extends StatelessWidget {
                     final category = categories[index];
 
                     return _CategoryItem(
-                      name: category.name,
+                      name: category.displayName,
                       imageUrl: category.imageUrl,
                       onTap: () {},
                     );
@@ -130,7 +131,7 @@ class _CategoryItem extends StatelessWidget {
             Text(
               name,
               textAlign: TextAlign.center,
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.caption.copyWith(
                 fontWeight: FontWeight.w500,

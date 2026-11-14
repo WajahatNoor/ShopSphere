@@ -1,6 +1,7 @@
 class CategoryModel {
   final String id;
   final String name;
+  final String displayName;
   final String imageUrl;
   final bool isActive;
   final int sortOrder;
@@ -8,6 +9,7 @@ class CategoryModel {
   const CategoryModel({
     required this.id,
     required this.name,
+    required this.displayName,
     required this.imageUrl,
     required this.isActive,
     required this.sortOrder,
@@ -17,6 +19,7 @@ class CategoryModel {
     return CategoryModel(
       id: documentId,
       name: map['name'] as String? ?? '',
+      displayName: map['displayName'] as String? ?? '',
       imageUrl: map['imageUrl'] as String? ?? '',
       isActive: map['isActive'] as bool? ?? false,
       sortOrder: (map['sortOrder'] as num?)?.toInt() ?? 0,
@@ -26,6 +29,7 @@ class CategoryModel {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
+      'displayName': displayName,
       'imageUrl': imageUrl,
       'isActive': isActive,
       'sortOrder': sortOrder,

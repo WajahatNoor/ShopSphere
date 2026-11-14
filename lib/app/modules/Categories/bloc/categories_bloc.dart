@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shop_shop_sphere/app/data/models/category_model.dart';
@@ -14,7 +12,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     on<FetchCategoriesRequested>(fetchCategoriesRequested);
   }
 
-  FutureOr<void> fetchCategoriesRequested(
+  Future<void> fetchCategoriesRequested(
     FetchCategoriesRequested event,
     Emitter<CategoriesState> emit,
   ) async {
